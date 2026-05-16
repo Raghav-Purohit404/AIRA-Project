@@ -3,5 +3,12 @@
         "Improve project quality",
         "Participate in hackathons",
         "Participate in hackathons to improve problem-solving skills."
+    ],
+    "TestStudent": [
+        "Participate in hackathons to improve problem-solving skills.",
+        "Expand your technical skill set."
+    ],
+    "AnalyticsTester": [
+        "Expand your technical skill set."
     ]
 }
