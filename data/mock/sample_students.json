@@ -1,0 +1,34 @@
+[
+  {
+    "name": "BinLaD",
+    "cgpa": 8.4,
+    "skills": ["Python", "FastAPI", "Docker"],
+    "projects": 4,
+    "internships": 1,
+    "hackathons": 0
+  },
+  {
+    "name": "VladPut",
+    "cgpa": 7.1,
+    "skills": ["Java", "SQL"],
+    "projects": 2,
+    "internships": 0,
+    "hackathons": 1
+  },
+  {
+    "name": "DonTru",
+    "cgpa": 9.0,
+    "skills": ["React", "Node.js", "MongoDB"],
+    "projects": 5,
+    "internships": 2,
+    "hackathons": 3
+  },
+  {
+    "name": "JeffStein",
+    "cgpa": 6.8,
+    "skills": ["C++", "DSA"],
+    "projects": 1,
+    "internships": 0,
+    "hackathons": 2
+  }
+]
