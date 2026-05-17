@@ -1,28 +1,16 @@
-def validate_cgpa(cgpa: float):
-
-    if not (0 <= cgpa <= 10):
-        raise ValueError(
-            "CGPA must be between 0 and 10"
-        )
-
-    return True
+from typing import List
 
 
-def validate_internships(count: int):
+class Validator:
 
-    if count < 0:
-        raise ValueError(
-            "Internship count cannot be negative"
-        )
+    @staticmethod
+    def validate_text(text: str) -> bool:
+        return bool(text and text.strip())
 
-    return True
+    @staticmethod
+    def validate_skill_list(skills: List[str]) -> bool:
+        return isinstance(skills, list) and len(skills) > 0
 
-
-def validate_hackathons(count: int):
-
-    if count < 0:
-        raise ValueError(
-            "Hackathon count cannot be negative"
-        )
-
-    return True
+    @staticmethod
+    def validate_cgpa(cgpa: float) -> bool:
+        return 0 <= cgpa <= 10
