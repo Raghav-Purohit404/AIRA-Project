@@ -7,18 +7,21 @@ from app.services.aira.normalization import (
 
 def test_normalization():
 
-    print("\nCGPA TESTS:")
-    print(normalize_cgpa(8.756))
-    print(normalize_cgpa(15))
-    print(normalize_cgpa(-2))
+    print("\n========== CGPA NORMALIZATION ==========")
 
-    print("\nHACKATHON TESTS:")
-    print(normalize_hackathons(5))
-    print(normalize_hackathons(20))
+    print("8.756  ->", normalize_cgpa(8.756))
+    print("15     ->", normalize_cgpa(15))
+    print("-2     ->", normalize_cgpa(-2))
 
-    print("\nINTERNSHIP TESTS:")
-    print(normalize_internships(2))
-    print(normalize_internships(10))
+    print("\n========== HACKATHON NORMALIZATION ==========")
+
+    print("5      ->", normalize_hackathons(5))
+    print("20     ->", normalize_hackathons(20))
+
+    print("\n========== INTERNSHIP NORMALIZATION ==========")
+
+    print("2      ->", normalize_internships(2))
+    print("10     ->", normalize_internships(10))
 
     assert normalize_cgpa(15) == 10
     assert normalize_hackathons(20) == 10

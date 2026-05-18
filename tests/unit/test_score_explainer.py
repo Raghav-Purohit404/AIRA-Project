@@ -34,12 +34,12 @@ def test_score_explainer():
         score
     )
 
-    print("\nAIRA SCORE:")
+    print("\n========== FINAL AIRA SCORE ==========")
     print(score)
 
-    print("\nEXPLANATION:")
+    print("\n========== SCORE EXPLANATION ==========")
 
     for line in explanation:
-        print("-", line)
+        print("•", line)
 
     assert isinstance(explanation, list)

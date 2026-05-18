@@ -22,7 +22,7 @@ def test_rule_score():
 
     score = calculate_rule_score(profile)
 
-    print("\nAIRA SCORE:")
-    print(score)
+    print("\n========== RULE ENGINE OUTPUT ==========")
+    print("FINAL AIRA SCORE:", score)
 
     assert score > 0
