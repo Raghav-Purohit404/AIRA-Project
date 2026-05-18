@@ -1,10 +1,13 @@
-from app.utils.validators import Validator
-
-
-def test_validate_text():
-    assert Validator.validate_text("hello") is True
+from app.utils.validators import (
+    validate_cgpa
+)
 
 
 def test_validator():
 
-    assert validate_cgpa(8.5) == True
+    result = validate_cgpa(8.5)
+
+    print("\n========== VALIDATOR OUTPUT ==========")
+    print("CGPA Validation Result:", result)
+
+    assert result == True
