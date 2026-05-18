@@ -1,7 +1,9 @@
-from app.utils.validators import (
-    validate_cgpa,
-    validate_internships,
-    validate_hackathons
+from app.utils.validators import Validator
+
+from app.services.aira.normalization import (
+    normalize_cgpa,
+    normalize_hackathons,
+    normalize_internships
 )
 
 from app.services.aira.rule_engine import (
@@ -13,27 +15,22 @@ from app.services.aira.score_explainer import (
 )
 
 
-def run_aira_engine(profile: dict):
+def run_aira_engine(profile):
 
-    # VALIDATION
-    validate_cgpa(
-        profile.get("cgpa", 0)
+    Validator.validate_cgpa(profile["cgpa"])
+
+    profile["cgpa"] = normalize_cgpa(profile["cgpa"])
+
+    profile["hackathons"] = normalize_hackathons(
+        profile["hackathons"]
     )
 
-    validate_internships(
-        profile.get("internships", 0)
+    profile["internships"] = normalize_internships(
+        profile["internships"]
     )
 
-    validate_hackathons(
-        profile.get("hackathons", 0)
-    )
+    score = calculate_rule_score(profile)
 
-    # SCORE CALCULATION
-    score = calculate_rule_score(
-        profile
-    )
-
-    # SCORE EXPLANATION
     explanation = explain_score(
         profile,
         score
@@ -48,13 +45,14 @@ def run_aira_engine(profile: dict):
 if __name__ == "__main__":
 
     sample_profile = {
-        "cgpa": 8.8,
+
+        "cgpa": 8.7,
 
         "skills": [
             "Python",
             "FastAPI",
             "React",
-            "Docker"
+            "SQL"
         ],
 
         "projects": [
@@ -71,15 +69,13 @@ if __name__ == "__main__":
         sample_profile
     )
 
-    print("\n========== AIRA RESULT ==========\n")
+    print("\n========== FINAL AIRA RESULT ==========")
 
-    print(
-        f"AIRA SCORE : {result['aira_score']}\n"
-    )
+    print("\nAIRA SCORE:")
+    print(result["aira_score"])
 
-    print("EXPLANATION:\n")
+    print("\nEXPLANATION:")
 
-    for item in result["explanation"]:
-        print(f"• {item}")
-
-    print("\n================================\n")
+    for line in result["explanation"]:
+        print("•", line)
+        
