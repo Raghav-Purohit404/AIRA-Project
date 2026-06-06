@@ -1,4 +1,5 @@
-#placeholder
+# placeholder
+
 import requests
 
 
@@ -12,6 +13,8 @@ def generate_llm_feedback(student, suggestions):
     prompt = f"""
     You are an expert placement mentor.
 
+    Give concise recruiter-style feedback in ONLY 100 to 120 words.
+
     Student Profile:
     Name: {student['name']}
     CGPA: {student['cgpa']}
@@ -21,14 +24,15 @@ def generate_llm_feedback(student, suggestions):
 
     Suggestions:
     {', '.join(suggestions)}
-
-    Generate professional placement guidance in 120 words.
     """
 
     payload = {
         "model": MODEL_NAME,
         "prompt": prompt,
-        "stream": False
+        "stream": False,
+        "options": {
+            "num_predict": 120
+        }
     }
 
     response = requests.post(
@@ -47,7 +51,7 @@ def generate_llm_feedback(student, suggestions):
         }
 
     return {
-        "llm_feedback": result["response"]
+        "llm_feedback": result["response"].strip()
     }
 
 
