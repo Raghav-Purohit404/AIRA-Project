@@ -1,43 +1,62 @@
-from typing import Dict, List
+"""Conversion of structured profiles into semantic search text."""
+
+from __future__ import annotations
+
+from collections.abc import Mapping, Sequence
+from typing import Any
 
 
 class ProfileToTextConverter:
-    """Converts profile dictionary into semantic text."""
+    """Convert profile dictionaries or Pydantic models into semantic prose."""
+
+    @classmethod
+    def convert(cls, profile: Mapping[str, Any] | Any) -> str:
+        """Return normalized, information-rich text for embedding."""
+        data = profile.model_dump(mode="json") if hasattr(profile, "model_dump") else dict(profile)
+        basic = data.get("basic_info") if isinstance(data.get("basic_info"), Mapping) else data
+        academic = data.get("academic") if isinstance(data.get("academic"), Mapping) else data
+        parts: list[str] = []
+
+        name = basic.get("full_name") or basic.get("name")
+        department = basic.get("department") or academic.get("department")
+        cgpa = academic.get("cgpa")
+        if name:
+            parts.append(f"{name} is a student")
+        if department:
+            parts.append(f"from {department}")
+        if parts:
+            parts[-1] = f"{parts[-1]}."
+        if cgpa is not None:
+            parts.append(f"Academic CGPA: {cgpa}.")
+
+        skills = cls._labels(data.get("skills"), ("name", "skill"))
+        if skills:
+            parts.append(f"Technical skills include {', '.join(skills)}.")
+        projects = cls._labels(data.get("projects"), ("title", "name"))
+        if projects:
+            parts.append(f"Project experience includes {', '.join(projects)}.")
+        internships = cls._labels(data.get("internships"), ("role", "company", "name"))
+        if internships:
+            parts.append(f"Internship experience includes {', '.join(internships)}.")
+        achievements = cls._labels(data.get("achievements"), ("title", "name"))
+        if achievements:
+            parts.append(f"Achievements include {', '.join(achievements)}.")
+        return " ".join(parts).strip()
 
     @staticmethod
-    def convert(profile: Dict) -> str:
-        parts: List[str] = []
-
-        name = profile.get("name")
-        if name:
-            parts.append(f"Student name is {name}.")
-
-        department = profile.get("department")
-        if department:
-            parts.append(f"Department: {department}.")
-
-        cgpa = profile.get("cgpa")
-        if cgpa:
-            parts.append(f"CGPA is {cgpa}.")
-
-        skills = profile.get("skills", [])
-        if skills:
-            skill_text = ", ".join(skills)
-            parts.append(f"Skilled in {skill_text}.")
-
-        projects = profile.get("projects", [])
-        if projects:
-            project_text = ", ".join(projects)
-            parts.append(f"Worked on projects like {project_text}.")
-
-        internships = profile.get("internships", [])
-        if internships:
-            internship_text = ", ".join(internships)
-            parts.append(f"Internship experience in {internship_text}.")
-
-        achievements = profile.get("achievements", [])
-        if achievements:
-            achievement_text = ", ".join(achievements)
-            parts.append(f"Achievements include {achievement_text}.")
-
-        return " ".join(parts).strip()
+    def _labels(value: Any, keys: tuple[str, ...]) -> list[str]:
+        """Extract readable labels from strings or structured items."""
+        if not isinstance(value, Sequence) or isinstance(value, (str, bytes)):
+            return []
+        labels: list[str] = []
+        for item in value:
+            if isinstance(item, str):
+                label = item
+            elif isinstance(item, Mapping):
+                label = " at ".join(str(item[key]) for key in keys if item.get(key))
+            else:
+                label = str(item)
+            normalized = " ".join(label.split())
+            if normalized:
+                labels.append(normalized)
+        return labels

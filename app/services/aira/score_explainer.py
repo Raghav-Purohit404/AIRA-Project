@@ -1,4 +1,6 @@
-def explain_score(profile: dict, score: float):
+def explain_score(profile: dict, score: float | dict[str, object]):
+    if isinstance(score, dict):
+        score = float(score.get("total_score", 0.0))
 
     explanation = []
 

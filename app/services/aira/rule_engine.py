@@ -62,8 +62,24 @@ class RuleEngine:
         )
 
 
-def calculate_rule_score(profile: CandidateProfile, required_skills: list[str] | None = None) -> dict[str, object]:
+def calculate_rule_score(
+    profile: CandidateProfile | dict[str, object],
+    required_skills: list[str] | None = None,
+) -> dict[str, object]:
     """Convenience wrapper returning a structured JSON-serializable score."""
+    if isinstance(profile, dict):
+        projects = profile.get("projects", 0)
+        internships = profile.get("internships", 0)
+        hackathons = profile.get("hackathons", 0)
+        achievements = profile.get("achievements", 0)
+        profile = CandidateProfile(
+            cgpa=float(profile.get("cgpa", 0.0)),
+            skills=[str(skill) for skill in profile.get("skills", [])],
+            projects=len(projects) if isinstance(projects, list) else int(projects),
+            internships=len(internships) if isinstance(internships, list) else int(internships),
+            hackathons=len(hackathons) if isinstance(hackathons, list) else int(hackathons),
+            achievements=len(achievements) if isinstance(achievements, list) else int(achievements),
+        )
     result = RuleEngine().score(profile, required_skills)
     return {
         "success": True,
