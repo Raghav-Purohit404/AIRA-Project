@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.exceptions import register_exception_handlers
+from app.core.middleware import register_metrics_middleware
 from app.api.v1 import (
     auth_routes,
     student_routes,
@@ -31,6 +33,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+register_metrics_middleware(app)
+register_exception_handlers(app)
 
 # =========================
 # ROOT ROUTE
