@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.api.v1 import analytics_routes
 
 from app.core.exceptions import register_exception_handlers
 from app.core.middleware import register_metrics_middleware
