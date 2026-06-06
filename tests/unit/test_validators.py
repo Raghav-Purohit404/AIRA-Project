@@ -1,11 +1,12 @@
-from app.utils.validators import Validator
+import pytest
+
+from app.utils.validators import validate_cgpa
 
 
-def test_validator():
+def test_validate_cgpa_accepts_valid_value() -> None:
+    assert validate_cgpa(8.5) == 8.5
 
-    result = Validator.validate_cgpa(8.5)
 
-    print("\n========== VALIDATOR OUTPUT ==========")
-    print("CGPA Validation Result:", result)
-
-    assert result == True
+def test_validate_cgpa_rejects_out_of_range_value() -> None:
+    with pytest.raises(ValueError):
+        validate_cgpa(10.5)
