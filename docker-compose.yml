@@ -1,1 +1,40 @@
-# placeholder
+services:
+  api:
+    build: .
+    container_name: aira-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      AIRA_DATABASE_URL: postgresql+psycopg://aira:aira@postgres:5432/aira
+      OLLAMA_URL: http://host.docker.internal:11434
+      FAISS_INDEX_PATH: /app/data/faiss/aira.index
+      FAISS_METADATA_PATH: /app/data/faiss/metadata.json
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: aira-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: aira
+      POSTGRES_USER: aira
+      POSTGRES_PASSWORD: aira
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aira -d aira"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:
