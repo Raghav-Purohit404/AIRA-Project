@@ -1,0 +1,13 @@
+Software Engineer - Backend Platform
+
+We are looking for an early-career Software Engineer to build reliable backend
+services for hiring, analytics, and candidate intelligence workflows. The role
+requires strong Python programming, API design with FastAPI or similar
+frameworks, SQL data modeling, testing discipline, and practical knowledge of
+machine learning systems. Experience with React, cloud deployment, observability,
+and semantic search is a plus.
+
+Responsibilities include designing REST APIs, implementing scoring and ranking
+logic, optimizing database queries, writing automated tests, collaborating with
+product and faculty stakeholders, and improving resume and job-description
+matching quality.

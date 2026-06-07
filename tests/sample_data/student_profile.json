@@ -1,0 +1,81 @@
+{
+  "basic_info": {
+    "full_name": "Ananya Rao",
+    "email": "ananya.rao@example.edu",
+    "phone": "+91-9876543210",
+    "department": "Computer Science and Engineering",
+    "batch_year": 2026
+  },
+  "academic": {
+    "degree": "B.Tech",
+    "department": "Computer Science and Engineering",
+    "graduation_year": 2026,
+    "cgpa": 8.72,
+    "semesters": [
+      {"semester": 1, "sgpa": 8.1, "credits": 22},
+      {"semester": 2, "sgpa": 8.4, "credits": 23},
+      {"semester": 3, "sgpa": 8.6, "credits": 24},
+      {"semester": 4, "sgpa": 8.8, "credits": 24},
+      {"semester": 5, "sgpa": 8.9, "credits": 23},
+      {"semester": 6, "sgpa": 9.0, "credits": 22}
+    ]
+  },
+  "skills": [
+    {"name": "Python", "level": "advanced", "years_experience": 3},
+    {"name": "FastAPI", "level": "intermediate", "years_experience": 1.5},
+    {"name": "SQL", "level": "intermediate", "years_experience": 2},
+    {"name": "Machine Learning", "level": "intermediate", "years_experience": 1.5},
+    {"name": "React", "level": "beginner", "years_experience": 1}
+  ],
+  "projects": [
+    {
+      "title": "AI Recruitment Assistant",
+      "description": "Built a FastAPI service that ranks student profiles against job descriptions using scoring rules and semantic similarity.",
+      "technologies": ["Python", "FastAPI", "SQL", "Machine Learning"],
+      "role": "Backend Developer",
+      "outcome": "Reduced manual screening time in a campus placement simulation."
+    },
+    {
+      "title": "Placement Analytics Dashboard",
+      "description": "Created dashboards for cohort scoring trends, skill gaps, and department-level readiness.",
+      "technologies": ["React", "Python", "Analytics"],
+      "role": "Full Stack Developer",
+      "outcome": "Presented actionable placement insights to faculty mentors."
+    }
+  ],
+  "internships": [
+    {
+      "company": "NexaSoft Labs",
+      "role": "Software Engineering Intern",
+      "start_date": "2025-05-15",
+      "end_date": "2025-08-15",
+      "description": "Implemented REST APIs, wrote unit tests, and optimized SQL queries for internal hiring tools.",
+      "technologies": ["Python", "FastAPI", "PostgreSQL"]
+    }
+  ],
+  "hackathons": [
+    {
+      "name": "Smart India Hackathon Campus Round",
+      "organizer": "College Innovation Cell",
+      "position": "Winner",
+      "project_title": "Resume Fit Analyzer",
+      "technologies": ["Python", "NLP", "React"]
+    }
+  ],
+  "achievements": [
+    {
+      "title": "AWS Cloud Foundations Certification",
+      "category": "certification",
+      "issuer": "AWS Academy",
+      "awarded_on": "2025-03-10",
+      "description": "Completed foundational cloud computing and deployment coursework."
+    },
+    {
+      "title": "Department Technical Lead",
+      "category": "leadership",
+      "issuer": "CSE Association",
+      "awarded_on": "2025-09-01",
+      "description": "Led peer workshops on backend development and interview preparation."
+    }
+  ]
+}
