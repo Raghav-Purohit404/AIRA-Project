@@ -9,6 +9,7 @@ from app.services.llm_local.fallback import recover_json, regex_skill_extraction
 from app.services.llm_local.hallucination_guard import HallucinationGuard
 from app.services.llm_local.llm_scorer import LLMScorer
 from app.services.llm_local.llm_service import LLMServiceError, OllamaLLMService
+from app.services.llm_local.pipeline import LocalLLMPipeline
 from app.services.llm_local.skill_extractor import extract_skill_groups
 
 
@@ -98,6 +99,51 @@ def test_skill_extraction_falls_back_when_llm_fails() -> None:
     assert "Python" in groups["programming_languages"]
     assert "FastAPI" in groups["frameworks"]
     assert "Docker" in groups["tools"]
+
+
+def test_local_llm_pipeline_passes_with_live_structured_response() -> None:
+    """The composed LLM pipeline should use structured Ollama output when available."""
+    session = FakeSession(
+        post_response=FakeResponse(
+            {
+                "response": (
+                    '{"programming_languages":["Python","SQL"],'
+                    '"frameworks":["FastAPI"],"tools":["Docker"],'
+                    '"cloud_technologies":[],"technical_skills":["Python","SQL","FastAPI","Docker"]}'
+                )
+            }
+        )
+    )
+    service = OllamaLLMService(session=session, retries=0)
+
+    result = LocalLLMPipeline(service=service).run_skill_pipeline(
+        "Python SQL FastAPI Docker",
+        ["Python", "FastAPI"],
+    )
+
+    assert result.success is True
+    assert result.mode == "live_ollama"
+    assert "FastAPI" in result.skills["technical_skills"]
+
+
+def test_local_llm_pipeline_passes_with_deterministic_fallback() -> None:
+    """The composed LLM pipeline should remain green when Ollama is unavailable."""
+    service = OllamaLLMService(
+        session=FakeSession(post_response=requests.Timeout("slow model")),
+        retries=0,
+    )
+
+    result = LocalLLMPipeline(service=service).run_skill_pipeline(
+        "Python SQL FastAPI Docker",
+        ["Python", "FastAPI"],
+    )
+
+    assert result.success is True
+    assert result.mode == "deterministic_fallback"
+    assert result.error and "slow model" in result.error
+    assert {"Python", "FastAPI", "SQL"} <= {
+        skill for values in result.skills.values() for skill in values
+    }
 
 
 def test_json_recovery_handles_fenced_and_embedded_payloads() -> None:

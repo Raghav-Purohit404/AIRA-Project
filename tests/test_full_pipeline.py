@@ -238,23 +238,19 @@ class PipelineValidator:
         return None
 
     def llm(self) -> str | None:
-        if not self._tcp_open("localhost", 11434, timeout=0.4):
-            raise SkipPipeline("Ollama is not reachable on localhost:11434.")
-        module = self._import_existing("app.services.llm_local.llm_service")
-        error_cls = self._require_attr(module, "LLMServiceError")
-        service_cls = self._require_attr(module, "OllamaLLMService")
-        service = service_cls(timeout=8, retries=0)
-        if hasattr(service, "is_available") and not service.is_available(timeout=1.0):
-            raise SkipPipeline("Ollama is reachable but did not respond to model discovery.")
-        if hasattr(service, "has_model") and not service.has_model(model=service.model, timeout=1.0):
-            raise SkipPipeline(f"Ollama model is not installed: {service.model}.")
-        try:
-            response = service.generate("Reply with exactly: AIRA_OK", model=service.model)
-        except error_cls as exc:
-            raise SkipPipeline(f"Ollama could not generate with {service.model}: {exc}") from exc
-        assert str(response).strip()
-        self.context["llm_response"] = response
-        return None
+        module = self._import_existing("app.services.llm_local.pipeline")
+        pipeline_cls = self._require_attr(module, "LocalLLMPipeline")
+        result = pipeline_cls().run_skill_pipeline(
+            "Built Python FastAPI services with SQL, Docker, and Machine Learning workflows.",
+            self._required_skills(),
+        )
+        assert result.success is True
+        assert result.mode in {"live_ollama", "deterministic_fallback"}
+        assert {"Python", "FastAPI", "SQL"} <= {
+            skill for values in result.skills.values() for skill in values
+        }
+        self.context["llm_response"] = result.to_dict()
+        return f"mode={result.mode}"
 
     def monitoring(self) -> str | None:
         module = self._import_existing("app.services.monitoring.monitoring_service")
@@ -411,7 +407,7 @@ def format_report(results: list[PipelineResult]) -> str:
     for result in results:
         dots = "." * max(1, width - len(result.name))
         lines.append(f"{result.name} {dots} {result.status}")
-        if result.reason and result.status != "PASS":
+        if result.reason:
             lines.append("Reason:")
             lines.append(result.reason)
     overall = "FAIL" if any(result.status == "FAIL" for result in results) else "PASS"
@@ -445,6 +441,10 @@ def test_full_pipeline_validation() -> None:
         "Rescoring",
         "Database",
     }
+    failures = [result for result in results if result.status == "FAIL"]
+    skips = [result for result in results if result.status == "SKIPPED"]
+    assert not failures, format_report(failures)
+    assert not skips, format_report(skips)
 
 
 if __name__ == "__main__":
