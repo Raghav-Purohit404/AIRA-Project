@@ -42,14 +42,14 @@ class HallucinationGuard:
             return GroundingResult(supported=True, confidence=1.0)
         unsupported = sorted(output_terms - context_terms)
         confidence = round(1.0 - (len(unsupported) / len(output_terms)), 4)
-        return GroundingResult(supported=confidence >= 0.75, confidence=max(0.0, confidence), unsupported_terms=unsupported)
+        return GroundingResult(supported=not unsupported, confidence=max(0.0, confidence), unsupported_terms=unsupported)
 
     def _terms(self, text: str) -> set[str]:
         """Extract normalized content terms."""
         return {
-            token
+            token.rstrip(".")
             for token in re.findall(r"[a-zA-Z][a-zA-Z0-9+#.]{1,}", text.casefold())
-            if token not in self.STOPWORDS
+            if token.rstrip(".") not in self.STOPWORDS
         }
 
 

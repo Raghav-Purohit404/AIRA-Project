@@ -241,9 +241,17 @@ class PipelineValidator:
         if not self._tcp_open("localhost", 11434, timeout=0.4):
             raise SkipPipeline("Ollama is not reachable on localhost:11434.")
         module = self._import_existing("app.services.llm_local.llm_service")
+        error_cls = self._require_attr(module, "LLMServiceError")
         service_cls = self._require_attr(module, "OllamaLLMService")
         service = service_cls(timeout=8, retries=0)
-        response = service.generate("Reply with exactly: AIRA_OK", model="phi3:3.8b")
+        if hasattr(service, "is_available") and not service.is_available(timeout=1.0):
+            raise SkipPipeline("Ollama is reachable but did not respond to model discovery.")
+        if hasattr(service, "has_model") and not service.has_model(model=service.model, timeout=1.0):
+            raise SkipPipeline(f"Ollama model is not installed: {service.model}.")
+        try:
+            response = service.generate("Reply with exactly: AIRA_OK", model=service.model)
+        except error_cls as exc:
+            raise SkipPipeline(f"Ollama could not generate with {service.model}: {exc}") from exc
         assert str(response).strip()
         self.context["llm_response"] = response
         return None

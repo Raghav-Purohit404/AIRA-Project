@@ -32,6 +32,44 @@ class OllamaLLMService:
         self.retries = max(0, retries)
         self.session = session or requests.Session()
 
+    def list_models(self, *, timeout: float | None = None) -> list[str]:
+        """Return locally available Ollama model names."""
+        try:
+            response = self.session.get(
+                f"{self.base_url}/api/tags",
+                timeout=timeout or min(self.timeout, 5.0),
+            )
+            response.raise_for_status()
+            payload = response.json()
+        except (requests.RequestException, ValueError) as exc:
+            raise LLMServiceError("Ollama model discovery failed.") from exc
+
+        models = payload.get("models", []) if isinstance(payload, dict) else []
+        names: list[str] = []
+        for model_info in models:
+            if not isinstance(model_info, dict):
+                continue
+            name = model_info.get("name") or model_info.get("model")
+            if name:
+                names.append(str(name))
+        return names
+
+    def is_available(self, *, timeout: float | None = None) -> bool:
+        """Return whether the Ollama API responds to a lightweight probe."""
+        try:
+            self.list_models(timeout=timeout)
+        except LLMServiceError:
+            return False
+        return True
+
+    def has_model(self, model: str | None = None, *, timeout: float | None = None) -> bool:
+        """Return whether the configured model is present in Ollama."""
+        target = model or self.model
+        try:
+            return target in self.list_models(timeout=timeout)
+        except LLMServiceError:
+            return False
+
     def generate(
         self,
         prompt: str,
@@ -71,7 +109,8 @@ class OllamaLLMService:
                 last_error = exc
                 if attempt < self.retries:
                     sleep(min(0.25 * (2**attempt), 2.0))
-        raise LLMServiceError(f"Ollama request failed after {self.retries + 1} attempts.") from last_error
+        detail = f" Last error: {last_error}" if last_error else ""
+        raise LLMServiceError(f"Ollama request failed after {self.retries + 1} attempts.{detail}") from last_error
 
 
 llm_service = OllamaLLMService()

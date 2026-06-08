@@ -50,10 +50,13 @@ def timeout_fallback(operation: str, source_text: str = "") -> dict[str, Any]:
 def _balanced_json_candidates(text: str) -> list[str]:
     """Extract balanced object and array substrings."""
     candidates: list[str] = []
-    for opening, closing in (("{", "}"), ("[", "]")):
-        start = text.find(opening)
-        if start < 0:
-            continue
+    starts = sorted(
+        (index, opening, closing)
+        for opening, closing in (("{", "}"), ("[", "]"))
+        for index in [text.find(opening)]
+        if index >= 0
+    )
+    for start, opening, closing in starts:
         depth = 0
         quoted = False
         escaped = False
