@@ -6,6 +6,10 @@ import re
 from collections import Counter
 from typing import Any
 
+from app.models.jd import JobDescription
+from app.services.jd.jd_parser import parse_jd
+from app.services.jd.jd_skill_mapper import jd_skill_mapper
+
 
 class ATSOptimizer:
     """Analyze resume content and recommend ATS improvements."""
@@ -25,14 +29,42 @@ class ATSOptimizer:
         missing_skills = [skill for skill in target_skills if skill.casefold() not in normalized_text]
         section_order = self._section_recommendations(normalized_text)
         formatting_warnings = self._formatting_warnings(resume_text)
+        matched_skills = [skill for skill in target_skills if skill.casefold() in normalized_text]
+        completeness = round(
+            100.0 * (len(self.RECOMMENDED_SECTIONS) - len(section_order)) / len(self.RECOMMENDED_SECTIONS), 2
+        )
         return {
             "success": True,
             "keyword_density": keyword_density,
             "missing_skills": missing_skills,
+            "matched_skills": matched_skills,
+            "required_skill_coverage": round(100.0 * len(matched_skills) / max(len(target_skills), 1), 2),
+            "section_completeness": completeness,
             "section_order_recommendations": section_order,
             "formatting_warnings": formatting_warnings,
             "ats_score": self._score(keyword_density, missing_skills, formatting_warnings),
         }
+
+    def analyze_against_jd(
+        self,
+        resume_text: str,
+        job_description: str | JobDescription | None,
+    ) -> dict[str, Any]:
+        """Assess ATS compatibility against a supplied JD without adding unsupported terms."""
+        if job_description is None:
+            return self.analyze(resume_text)
+        if isinstance(job_description, JobDescription):
+            raw_skills = [*job_description.required_skills, *job_description.preferred_skills]
+            role_title = job_description.role_title
+        else:
+            parsed = parse_jd(job_description)
+            raw_skills = [*parsed.get("skills", []), *parsed.get("technologies", [])]
+            role_title = ""
+        target_skills = jd_skill_mapper.normalize_skills([str(skill) for skill in raw_skills])
+        result = self.analyze(resume_text, target_skills)
+        result["job_title"] = role_title
+        result["target_skills"] = target_skills
+        return result
 
     def _section_recommendations(self, normalized_text: str) -> list[str]:
         """Return missing recommended sections."""

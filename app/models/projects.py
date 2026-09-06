@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 
+from app.core.constants import CANONICAL_SKILL_ALIASES
+
 
 class Project(BaseModel):
     """A portfolio project."""
@@ -14,8 +16,10 @@ class Project(BaseModel):
     role: str | None = Field(default=None, max_length=120)
     outcome: str | None = Field(default=None, max_length=500)
     repository_url: str | None = Field(default=None, max_length=500)
+    deployment_url: str | None = Field(default=None, max_length=500)
+    date: str | None = Field(default=None, max_length=80)
 
-    @field_validator("title", "description", "role", "outcome", "repository_url")
+    @field_validator("title", "description", "role", "outcome", "repository_url", "deployment_url", "date")
     @classmethod
     def normalize_optional_text(cls, value: str | None) -> str | None:
         """Normalize optional text fields."""
@@ -31,6 +35,7 @@ class Project(BaseModel):
         seen: set[str] = set()
         for value in values:
             item = " ".join(value.strip().split())
+            item = CANONICAL_SKILL_ALIASES.get(item.casefold(), item)
             if item and item.lower() not in seen:
                 seen.add(item.lower())
                 normalized.append(item)

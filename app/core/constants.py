@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import StrEnum
 
 
-class UserRole(str, StrEnum):
+class UserRole(StrEnum):
     """Supported authorization roles."""
 
     ADMIN = "admin"
@@ -14,7 +14,7 @@ class UserRole(str, StrEnum):
     RECRUITER = "recruiter"
 
 
-class ResumeTemplate(str, StrEnum):
+class ResumeTemplate(StrEnum):
     """Supported resume template identifiers."""
 
     ATS = "ats"

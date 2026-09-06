@@ -11,6 +11,9 @@ from app.models.hackathons import Hackathon
 from app.models.internships import Internship
 from app.models.projects import Project
 from app.models.skills import Skill
+from app.models.certifications import Certification
+from app.models.extracurriculars import ExtracurricularActivity
+from app.models.publications import Publication
 
 
 class StudentProfileCreate(BaseModel):
@@ -23,6 +26,9 @@ class StudentProfileCreate(BaseModel):
     internships: list[Internship] = Field(default_factory=list)
     hackathons: list[Hackathon] = Field(default_factory=list)
     achievements: list[Achievement] = Field(default_factory=list)
+    certifications: list[Certification] = Field(default_factory=list)
+    extracurriculars: list[ExtracurricularActivity] = Field(default_factory=list)
+    publications: list[Publication] = Field(default_factory=list)
 
 
 class StudentProfileUpdate(BaseModel):
@@ -35,6 +41,9 @@ class StudentProfileUpdate(BaseModel):
     internships: list[Internship] | None = None
     hackathons: list[Hackathon] | None = None
     achievements: list[Achievement] | None = None
+    certifications: list[Certification] | None = None
+    extracurriculars: list[ExtracurricularActivity] | None = None
+    publications: list[Publication] | None = None
 
 
 class StudentProfileResponse(BaseModel):

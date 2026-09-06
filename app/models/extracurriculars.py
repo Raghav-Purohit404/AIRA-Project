@@ -7,7 +7,7 @@ from enum import StrEnum
 from pydantic import BaseModel, Field, field_validator
 
 
-class ActivityType(str, StrEnum):
+class ActivityType(StrEnum):
     """Supported extracurricular activity categories."""
 
     CLUB = "club"

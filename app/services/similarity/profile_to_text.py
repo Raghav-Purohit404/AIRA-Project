@@ -41,6 +41,15 @@ class ProfileToTextConverter:
         achievements = cls._labels(data.get("achievements"), ("title", "name"))
         if achievements:
             parts.append(f"Achievements include {', '.join(achievements)}.")
+        certifications = cls._labels(data.get("certifications"), ("name",))
+        if certifications:
+            parts.append(f"Certifications include {', '.join(certifications)}.")
+        publications = cls._labels(data.get("publications"), ("title", "venue"))
+        if publications:
+            parts.append(f"Research includes {', '.join(publications)}.")
+        activities = cls._labels(data.get("extracurriculars"), ("title", "leadership_role"))
+        if activities:
+            parts.append(f"Leadership and activities include {', '.join(activities)}.")
         return " ".join(parts).strip()
 
     @staticmethod

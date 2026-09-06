@@ -52,6 +52,7 @@ class AppEnvironment:
     database_url: str
     faiss_index_path: Path
     faiss_metadata_path: Path
+    resume_output_dir: Path
 
     @property
     def is_production(self) -> bool:
@@ -84,6 +85,7 @@ def load_environment() -> AppEnvironment:
         database_url=env_str("AIRA_DATABASE_URL", env_str("DATABASE_URL", "sqlite:///aira.db")),
         faiss_index_path=Path(env_str("FAISS_INDEX_PATH", "data/faiss/aira.index")),
         faiss_metadata_path=Path(env_str("FAISS_METADATA_PATH", "data/faiss/metadata.json")),
+        resume_output_dir=Path(env_str("RESUME_OUTPUT_DIR", "output/resumes")),
     )
 
 

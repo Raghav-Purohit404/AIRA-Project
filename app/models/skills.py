@@ -6,6 +6,8 @@ from enum import StrEnum
 
 from pydantic import BaseModel, Field, field_validator
 
+from app.core.constants import CANONICAL_SKILL_ALIASES
+
 
 class SkillLevel(StrEnum):
     """Supported skill proficiency levels."""
@@ -27,4 +29,5 @@ class Skill(BaseModel):
     @classmethod
     def normalize_name(cls, value: str) -> str:
         """Normalize skill names."""
-        return " ".join(value.strip().split())
+        normalized = " ".join(value.strip().split())
+        return CANONICAL_SKILL_ALIASES.get(normalized.casefold(), normalized)

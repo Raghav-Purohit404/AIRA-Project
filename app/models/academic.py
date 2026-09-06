@@ -18,11 +18,14 @@ class AcademicRecord(BaseModel):
 
     degree: str = Field(min_length=2, max_length=120)
     department: str = Field(min_length=2, max_length=120)
+    institution: str | None = Field(default=None, max_length=200)
+    location: str | None = Field(default=None, max_length=160)
+    start_year: int | None = Field(default=None, ge=2000, le=2100)
     graduation_year: int = Field(ge=2000, le=2100)
     cgpa: float = Field(ge=0.0, le=10.0)
     semesters: list[SemesterRecord] = Field(default_factory=list)
 
-    @field_validator("degree", "department")
+    @field_validator("degree", "department", "institution", "location")
     @classmethod
     def normalize_text(cls, value: str) -> str:
         """Normalize display text fields."""

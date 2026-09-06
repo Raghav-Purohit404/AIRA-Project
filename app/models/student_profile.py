@@ -12,6 +12,9 @@ from app.models.hackathons import Hackathon
 from app.models.internships import Internship
 from app.models.projects import Project
 from app.models.skills import Skill
+from app.models.certifications import Certification
+from app.models.extracurriculars import ExtracurricularActivity
+from app.models.publications import Publication
 
 
 class StudentBasicInfo(BaseModel):
@@ -20,10 +23,14 @@ class StudentBasicInfo(BaseModel):
     full_name: str = Field(min_length=2, max_length=120)
     email: str = Field(pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$", max_length=254)
     phone: str | None = Field(default=None, max_length=30)
+    location: str | None = Field(default=None, max_length=160)
+    linkedin_url: str | None = Field(default=None, max_length=500)
+    github_url: str | None = Field(default=None, max_length=500)
+    portfolio_url: str | None = Field(default=None, max_length=500)
     department: str = Field(min_length=2, max_length=120)
     batch_year: int = Field(ge=2000, le=2100)
 
-    @field_validator("full_name", "department")
+    @field_validator("full_name", "department", "location", "linkedin_url", "github_url", "portfolio_url")
     @classmethod
     def normalize_text(cls, value: str) -> str:
         """Normalize display text."""
@@ -47,6 +54,9 @@ class StudentProfile(BaseModel):
     internships: list[Internship] = Field(default_factory=list)
     hackathons: list[Hackathon] = Field(default_factory=list)
     achievements: list[Achievement] = Field(default_factory=list)
+    certifications: list[Certification] = Field(default_factory=list)
+    extracurriculars: list[ExtracurricularActivity] = Field(default_factory=list)
+    publications: list[Publication] = Field(default_factory=list)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -62,6 +72,9 @@ class StudentProfile(BaseModel):
             bool(self.internships),
             bool(self.hackathons),
             bool(self.achievements),
+            bool(self.certifications),
+            bool(self.extracurriculars),
+            bool(self.publications),
         ]
         return round((sum(checks) / len(checks)) * 100.0, 2)
 

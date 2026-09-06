@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.services.jd.jd_skill_mapper import jd_skill_mapper
+
 
 def generate_rule_feedback(profile: dict[str, Any]) -> dict[str, list[str]]:
     """Generate strengths, weaknesses, and recommendations from profile fields."""
@@ -55,7 +57,7 @@ def generate_profile_feedback(profile: dict[str, Any], target_skills: list[str] 
     internship_items = profile.get("internships", [])
     hackathon_items = profile.get("hackathons", [])
     achievement_items = profile.get("achievements", [])
-    skill_names = [str(item.get("name", item)) if isinstance(item, dict) else str(item) for item in skill_items]
+    skill_names = jd_skill_mapper.normalize_skills([str(item.get("name", item)) if isinstance(item, dict) else str(item) for item in skill_items])
     feedback = generate_rule_feedback(
         {
             "cgpa": academic.get("cgpa", 0),
@@ -67,7 +69,7 @@ def generate_profile_feedback(profile: dict[str, Any], target_skills: list[str] 
         }
     )
 
-    targets = {skill.strip().lower() for skill in (target_skills or []) if skill.strip()}
+    targets = {skill.casefold() for skill in jd_skill_mapper.normalize_skills(target_skills or [])}
     existing = {skill.strip().lower() for skill in skill_names if skill.strip()}
     missing_skills = sorted(targets - existing)
     if missing_skills:

@@ -1,0 +1,111 @@
+{
+  "basic_info": {
+    "full_name": "Maya Iyer",
+    "email": "maya.iyer@example.test",
+    "phone": "+91-98765-43210",
+    "location": "Bengaluru, India",
+    "linkedin_url": "https://www.linkedin.com/in/maya-iyer-test",
+    "github_url": "https://github.com/maya-iyer-test",
+    "portfolio_url": "https://maya-iyer-test.example",
+    "department": "Computer Science and Engineering",
+    "batch_year": 2027
+  },
+  "academic": {
+    "degree": "Bachelor of Technology",
+    "department": "Computer Science and Engineering",
+    "institution": "Institute of Advanced Computing and Applied Engineering",
+    "location": "Bengaluru, India",
+    "start_year": 2023,
+    "graduation_year": 2027,
+    "cgpa": 8.84,
+    "semesters": [
+      {"semester": 1, "sgpa": 8.2, "credits": 22},
+      {"semester": 2, "sgpa": 8.5, "credits": 23},
+      {"semester": 3, "sgpa": 8.8, "credits": 24},
+      {"semester": 4, "sgpa": 9.0, "credits": 24}
+    ]
+  },
+  "skills": [
+    {"name": "Python", "level": "advanced", "years_experience": 3},
+    {"name": "JS", "level": "intermediate", "years_experience": 2},
+    {"name": "Postgres", "level": "intermediate", "years_experience": 2},
+    {"name": "FastAPI", "level": "intermediate", "years_experience": 2},
+    {"name": "React", "level": "intermediate", "years_experience": 2},
+    {"name": "Docker", "level": "beginner", "years_experience": 1},
+    {"name": "AWS", "level": "beginner", "years_experience": 1},
+    {"name": "Machine Learning", "level": "intermediate", "years_experience": 1.5},
+    {"name": "TypeScript", "level": "intermediate", "years_experience": 1},
+    {"name": "MongoDB", "level": "intermediate", "years_experience": 1},
+    {"name": "Redis", "level": "beginner", "years_experience": 1},
+    {"name": "Natural Language Processing", "level": "beginner", "years_experience": 1},
+    {"name": "Git", "level": "advanced", "years_experience": 3},
+    {"name": "Linux", "level": "intermediate", "years_experience": 2}
+  ],
+  "projects": [
+    {
+      "title": "Campus Placement Intelligence Platform",
+      "description": "Built a FastAPI service that scores validated student profiles against job descriptions. Designed a React dashboard for placement-cell review and added evidence-backed recommendations. Long project evidence sentence with validated implementation detail. Long project evidence sentence with validated implementation detail. Long project evidence sentence with validated implementation detail. Long project evidence sentence with validated implementation detail.",
+      "technologies": ["Python", "FastAPI", "Postgres", "React", "Docker", "AWS", "Git"],
+      "role": "Backend and Data Developer",
+      "outcome": "Produced explainable candidate readiness reports for synthetic campus-placement test data.",
+      "repository_url": "https://github.com/maya-iyer-test/placement-intelligence",
+      "deployment_url": "https://placement-intelligence.example",
+      "date": "Aug 2025 - Dec 2025"
+    },
+    {
+      "title": "Accessible Study Planner",
+      "description": "Created a web application that organizes course tasks, sends reminder queues, and visualizes weekly workload from user-entered study plans.",
+      "technologies": ["JavaScript", "React", "Python"],
+      "role": "Full Stack Developer",
+      "repository_url": "https://github.com/maya-iyer-test/study-planner",
+      "date": "Jan 2025 - Apr 2025"
+    },
+    {
+      "title": "Longitudinal Skills Evidence and Interview Preparation Workspace",
+      "description": "Created a web application that organizes course tasks, sends reminder queues, and visualizes weekly workload from user-entered study plans. Implemented typed API contracts, accessible client-side forms, and persisted study plans with relational queries. Long project evidence sentence with validated implementation detail. Long project evidence sentence with validated implementation detail. Long project evidence sentence with validated implementation detail.",
+      "technologies": ["TypeScript", "React", "Python", "PostgreSQL", "Docker"],
+      "role": "Full Stack Developer",
+      "outcome": "Improved the consistency of peer interview preparation records across a synthetic cohort of student contributors.",
+      "repository_url": "https://github.com/maya-iyer-test/skills-evidence-workspace-with-long-repository-path",
+      "date": "Sep 2024 - Dec 2024"
+    },
+    {
+      "title": "Grounded Research Paper Discovery Assistant",
+      "description": "Developed a retrieval prototype that converts structured research interests into ranked evidence snippets, records query provenance, and surfaces only source-backed summaries for review by student researchers.",
+      "technologies": ["Python", "Natural Language Processing", "MongoDB", "Git"],
+      "role": "Research Developer",
+      "outcome": "Created reproducible relevance experiments with documented limitations and citation links.",
+      "repository_url": "https://github.com/maya-iyer-test/grounded-paper-discovery",
+      "date": "May 2024 - Aug 2024"
+    }
+  ],
+  "internships": [
+    {
+      "company": "Nexora Recruitment Systems",
+      "role": "Software Engineering Intern",
+      "location": "Bengaluru, India",
+      "start_date": "2026-05-01",
+      "end_date": "2026-08-15",
+      "description": "Implemented REST API endpoints for recruiting workflows. Improved SQL query handling for candidate search and wrote unit-test coverage for profile validation.",
+      "technologies": ["Python", "FastAPI", "PostgreSQL", "Docker"]
+    },
+    {
+      "company": "Applied AI Research Lab",
+      "role": "Research Engineering Intern",
+      "location": "Remote",
+      "start_date": "2025-05-15",
+      "end_date": "2025-07-30",
+      "description": "Prepared structured datasets for a supervised learning prototype and documented reproducible data-processing steps.",
+      "technologies": ["Python", "Machine Learning"]
+    }
+  ],
+  "hackathons": [{"name": "Smart Campus Hackathon", "organizer": "Innovation Cell", "position": "Finalist", "project_title": "Placement Intelligence Platform", "technologies": ["Python", "React", "FastAPI"]}],
+  "achievements": [{"title": "Department Merit Scholarship", "category": "academic", "issuer": "Institute of Advanced Computing", "awarded_on": "2025-08-01", "description": "Awarded for academic performance in the Computer Science and Engineering cohort."}],
+  "certifications": [
+    {"name": "AWS Academy Cloud Foundations", "issuer": "AWS Academy", "issue_date": "2025-03-10", "credential_id": "TEST-AWS-2025-0310", "credential_url": "https://www.credly.com/test/maya-iyer"},
+    {"name": "Relational Database Design and SQL Performance Fundamentals", "issuer": "Open Learning Institute", "issue_date": "2025-06-18", "credential_id": "TEST-SQL-2025-0618", "credential_url": "https://credentials.example/test/maya-iyer/sql-performance"},
+    {"name": "Practical API Design with Typed Python Services", "issuer": "Backend Engineering Academy", "issue_date": "2026-01-09", "credential_id": "TEST-API-2026-0109", "credential_url": "https://credentials.example/test/maya-iyer/python-api-design"}
+  ],
+  "publications": [{"title": "Evidence-Grounded Candidate Ranking for Campus Placement", "authors": ["Maya Iyer", "Test Research Mentor"], "venue": "Student Computing Research Symposium", "year": 2026, "doi": "10.0000/test.aira.2026", "url": "https://research.example/maya-iyer-ranking"}],
+  "extracurriculars": [{"activity_type": "leadership", "title": "Open Source Student Community", "leadership_role": "Technical Lead", "duration_months": 18, "achievements": ["Coordinated peer code-review sessions and backend-development workshops."]}]
+}

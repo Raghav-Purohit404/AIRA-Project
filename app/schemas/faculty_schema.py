@@ -17,7 +17,7 @@ class CandidateInput(BaseModel):
     internships: int = Field(default=0, ge=0)
     projects: int = Field(default=0, ge=0)
     hackathons: int = Field(default=0, ge=0)
-    semantic_similarity: float | None = Field(default=None, ge=0.0, le=1.0)
+    semantic_similarity: float | None = Field(default=None, ge=-1.0, le=1.0)
 
 
 class CandidateFilterRequest(BaseModel):
